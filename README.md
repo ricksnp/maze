@@ -2,7 +2,7 @@
 
 ![Test](https://github.com/philiprbrenan/maze/workflows/Test/badge.svg)
 
-![alt text for screen readers](http://philiprbrenan.appaapps.com.s3-website-eu-west-1.amazonaws.com/images/infinity.png "Text to show on mouseover").
+![alt text for screen readers](/infinity.png "Text to show on mouseover").
 Traverse a maze in java.  Place a maze in **maze.txt** and commit.  The action will run and place the results in **output.txt**, see:
 ```
 Success!
