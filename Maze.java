@@ -77,8 +77,8 @@ public class Maze
 
     if (maze[r][c] == ' ' || maze[r][c] == 'S')                                 // Try to make a move
      {  maze[r][c] = m;
-       final int i = rand.nextInt(4);                                           // Randomize the directionality
-       final char D = '↑', U = '↓', P = '←', N = '➜';
+       final int  i = rand.nextInt(4);                                           // Randomize the directionality
+       final char D = '⬆', U = '⬇', P = '⬅', N = '➜';
        final boolean R =
         i==0 ? dm(r, c+1, N) || dm(r, c-1, P) || dm(r+1, c, U) || dm(r-1, c, D) :
         i==1 ? dm(r+1, c, U) || dm(r-1, c, D) || dm(r, c+1, N) || dm(r, c-1, P) :
