@@ -1,6 +1,6 @@
 # maze
 
-Traverse a maze in java.  Place a maze in MazeData1.txt and commit.  The action will run and place the results in output.txt, see:
+Traverse a maze in java.  Place a maze in **maze.txt** and commit.  The action will run and place the results in output.txt, see:
 ```
 Success!
 Step: 836
