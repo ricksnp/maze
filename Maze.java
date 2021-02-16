@@ -82,7 +82,7 @@ public class Maze
 
     if (maze[r][c] == 'E')                                                      // Check for exit
      {  maze[r][c]  = m;
-      say("Success!");
+      say("Success after "+steps+" steps!");
       display();
       System.exit(0);
      }
@@ -101,8 +101,7 @@ public class Maze
    }
 
   public static void display()                                                  // Display the maze
-   {say("Step: " + steps);
-    for  (int r = 0; r < rows; r++)
+   {for  (int r = 0; r < rows; r++)
      {for(int c = 0; c < cols; c++)
        {final char m = maze[r][c], k = corners[r][c];
         char q = m;
