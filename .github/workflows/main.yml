@@ -20,7 +20,7 @@ jobs:
     - name: Test
       run: |
         javac -d . -g Maze.java 
-        java -ea -cp . Test.Maze > output.txt
+        java -ea -cp . Test.Maze 2> output.txt
         cat output.txt
         ls -la
         GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} perl upload.pl 
