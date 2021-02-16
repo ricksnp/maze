@@ -4,7 +4,7 @@ import java.util.*;
 import java.io.*;
 
 public class Maze
- {static String inputFile = "MazeData1.txt";                                    //This is the input file for the maze
+ {static String inputFile = "maze.txt";                                    //This is the input file for the maze
   static int steps = 0, row = -1, col = -1, startingRow = -1, startingCol = -1,
                                               endingRow = -1, endingCol   = -1;
   static char[][] theMaze;
