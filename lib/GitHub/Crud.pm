@@ -29,9 +29,8 @@ sub GitHub::Crud::Response::new($$)                                             
  {my ($gitHub, $request) = @_;                                                  # Github, request string
 
   my $R = bless {command=>$request}, "GitHub::Crud::Response";                  # Construct the response
-say STDERR $request;
+
   my $r = xxx $request, qr(HTTP);
-say STDERR dump($r);
 
   $r =~ s/\r//gs;                                                               # Internet line ends
   my ($http, @r) = split /\n/, $r;
@@ -391,7 +390,7 @@ sub read($;$)                                                                   
 
 sub write($$;$)                                                                 # Write utf8 data into a L<GitHub> file.\mRequired attributes: L<userid|/userid>, L<repository|/repository>, L<patKey|/patKey>. Either specify the target file on:<github> using the L<gitFile|/gitFile> attribute or supply it as the third parameter.  Returns B<true> on success else L<undef>.
  {my ($gitHub, $data, $File) = @_;                                              # GitHub object, data to be written, optionally the name of the file on github
-say STDERR "AAAA", dump(@_);
+
   unless($data)                                                                 # No data supplied so delete the file
    {if ($File)
      {my $file = $gitHub->file;
@@ -431,7 +430,6 @@ say STDERR "AAAA", dump(@_);
 #    }
 #  }
 
-say STDERR "BBBB";
   my $denc = encodeBase64($data) =~ s/\n//gsr;
 
   my $branch = sub                                                              # It seems we must put the branch in the json file though the documentation seems to imply it can go in the url or the json
@@ -445,7 +443,6 @@ say STDERR "BBBB";
   my $d = qq(-d @).$t;
   my $u = filePath($url, $user, $repo, qw(contents), $file.$bran);
   my $c = qq(curl -si -X PUT $pat $u $d);                                       # Curl command
-say STDERR "CCCC $c";
   my $r = GitHub::Crud::Response::new($gitHub, $c);                             # Execute command to create response
   unlink $t;                                                                    # Cleanup
 
