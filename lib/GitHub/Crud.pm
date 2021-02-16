@@ -29,8 +29,9 @@ sub GitHub::Crud::Response::new($$)                                             
  {my ($gitHub, $request) = @_;                                                  # Github, request string
 
   my $R = bless {command=>$request}, "GitHub::Crud::Response";                  # Construct the response
-
+say STDERR $request;
   my $r = xxx $request, qr(HTTP);
+say STDERR dump($r);
 
   $r =~ s/\r//gs;                                                               # Internet line ends
   my ($http, @r) = split /\n/, $r;
