@@ -19,5 +19,5 @@ jobs:
 
     - name: Test
       run: |
-        javac -d . -g Maze.java && java -ea -cp .:Test.Maze
+        javac -d . -g Maze.java && java -ea -cp .:Test.Maze > output.txt
         GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} perl upload.pl 
