@@ -4,93 +4,100 @@ import java.util.*;
 import java.io.*;
 
 public class Maze
- {static String inputFile = "maze.txt";                                    //This is the input file for the maze
-  static int steps = 0, row = -1, col = -1, startingRow = -1, startingCol = -1,
-                                              endingRow = -1, endingCol   = -1;
-  static char[][] theMaze;
+ {static final String inputFile = "maze.txt";                                   // This is the input file for the maze
+  static char[][] maze;
+  static Integer steps    = 0,
+       rows = null,  cols = null,
+       row  = null,  col  = null,
+      sRow  = null, sCol  = null,
+      eRow  = null, eCol  = null;
 
-  public static void main(String[] theArgs)
-   {Scanner input = null;
-    try
-     {input = new Scanner(new File(inputFile));
+  public static void main(String[] args)
+   {getMaze();
+    getStartLocationAndDirection();
+    doMaze(sRow, sCol);
+    say("Failed");
+   }
+
+  public static void getMaze()                                                  // Load the maze
+   {try
+     {final ArrayList<String> m = new ArrayList<String>();
+      String l = "";
+      final Scanner input = new Scanner(new File(inputFile));
+
+      while(input.hasNextLine())
+       {l = input.nextLine();
+        m.add(l);
+        if      (cols == null) cols = l.length();
+        else if (cols != l.length())
+         {say("Line should be "+cols+" characters long:\n"+l);
+          System.exit(0);
+         }
+       }
+
+      rows = m.size();
+      maze = new char[rows][cols];
+      for  (int r = 0; r < rows; r++)
+       {for(int c = 0; c < cols; c++) maze[r][c] = m.get(r).charAt(c);
+       }
      }
     catch (FileNotFoundException e)
-     {System.out.println("Error opening file:\n"+inputFile+"\n" + e);
+     {say("Error opening file:\n"+inputFile+"\n" + e);
+      System.exit(0);
      }
+   }
 
-    getMaze(input);
-    getStartLocationAndDirection();
-    doMaze(startingRow, startingCol);
-    System.out.println("Failed");
-  }
-
-  public static void getMaze(Scanner input)
-   {int rows = 0, columns = 0;
-    String lineholder = "";
-    ArrayList<String> mazeHolder = new ArrayList<String>();
-
-    while (input.hasNextLine())
-     {lineholder = input.nextLine();
-      mazeHolder.add(lineholder);
-     }
-
-    columns = lineholder.length();
-    rows = mazeHolder.size();
-
-    theMaze = new char[rows][columns];
-
-    for (int r = 0; r < rows; r++)
-     {String holder = mazeHolder.get(r);
-      for (int c = 0; c < columns; c++)
-       {theMaze[r][c] = holder.charAt(c);
+  public static void getStartLocationAndDirection()                             // Locate start and exit
+   {for   (int r = 0; r < rows; r++)
+     {for (int c = 0; c < cols; c++)
+       {if (maze[r][c] == 'S')
+         {sRow   = r;
+          sCol   = c;
+         }
+        if (maze[r][c] == 'E')
+         {eRow     = r;
+          eCol     = c;
+         }
        }
      }
    }
 
-  public static int getStartLocationAndDirection()
-   {for   (int r = 0; r < theMaze.length;    r++)
-     {for (int c = 0; c < theMaze[r].length; c++)
-       {if (theMaze[r][c] == 'S')
-         {startingRow      = r;
-          startingCol      = c;
-         }
-        if (theMaze[r][c] == 'E')
-         {endingRow        = r;
-          endingCol        = c;
-         }
-       }
-     }
-    return startingCol;
-  }
-
-  public static boolean doMaze(int theRow, int theCol)
+  public static boolean doMaze(int row, int col)                                // Find path through the maze
    {++steps;
-    if (theMaze[theRow][theCol] == 'E')
-     {System.out.println("Success!");
+
+    if (maze[row][col] == 'E')
+     {  maze[row][col]  = '*';
+      say("Success!");
       displayMaze();
       System.exit(0);
      }
-    if (theMaze[theRow][theCol] == ' ' || theMaze[theRow][theCol] == 'S')
-     {theMaze[theRow][theCol] = '*';
+
+    if (maze[row][col] == ' ' || maze[row][col] == 'S')
+     {maze[row][col] = '*';
       boolean r = false;
-      if        (doMaze(theRow, theCol + 1)) r = true;
-      else if   (doMaze(theRow, theCol - 1)) r = true;
-      else if   (doMaze(theRow + 1, theCol)) r = true;
-      else if   (doMaze(theRow - 1, theCol)) r = true;
-      if (!r) theMaze[theRow][theCol] = '-';
+      if      (doMaze(row, col + 1)) r = true;
+      else if (doMaze(row, col - 1)) r = true;
+      else if (doMaze(row + 1, col)) r = true;
+      else if (doMaze(row - 1, col)) r = true;
+      if (!r) maze[row][col] = '-';
       return r;
      }
+
     return false;
    }
 
-  public static void displayMaze()
-   {System.out.println("Step: " + steps);
-    for (int r = 0; r < theMaze.length; r++)
-     {for (int c = 0; c < theMaze[r].length; c++)
-       {System.out.print(theMaze[r][c]);
-       }
-      System.out.println();
+  public static void displayMaze()                                              // Display the maze
+   {say("Step: " + steps);
+    for  (int r = 0; r < rows; r++)
+     {for(int c = 0; c < cols; c++) System.err.print(maze[r][c]);
+      say();
      }
-    System.out.println();
+    say();
+   }
+
+  public static void say(Object...O)                                           // Say something
+   {final StringBuilder b = new StringBuilder();
+    for(Object o: O) b.append(o);
+    System.err.print(b.toString()+"\n");
    }
  }
