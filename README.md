@@ -4,8 +4,7 @@
 
 Traverse a **maze** via java running in a gitHub action.  Place a maze in file: **maze.txt** and commit.  The action will run and place the results in file: **output.txt**, see:
 ```
-Success!
-Step: 1490
+Success after: 1490 steps!
 █+████████████████████████████████████████████
 █┃█┏━┓┏┓█┏┓┏┓┏┓┏━┓┏━━┓┏┓┏┓   ┏┓   █┏┓┏┓ ┏┓┏━┓█
 █┃█┃┏┛┃┃█┃┃┃┃┃┃┃ ┃┃ █┃┃┃┃┗━━━┛┃ ┏┓█┃┃┃┃ ┃┗┛█┃█
