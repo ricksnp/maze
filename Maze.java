@@ -64,7 +64,7 @@ public class Maze
 
   public static boolean doMaze(int row, int col)                                // Find path through the maze
    {++steps;
-
+    if (row < 0 || row >= rows || col < 0 || col >= cols) return false;
     if (maze[row][col] == 'E')
      {  maze[row][col]  = '*';
       say("Success!");
