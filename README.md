@@ -2,7 +2,6 @@
 
 ![Test](https://github.com/philiprbrenan/maze/workflows/Test/badge.svg)
 
-<img src="infinity.png">
 Traverse a maze in java.  Place a maze in **maze.txt** and commit.  The action will run and place the results in **output.txt**, see:
 ```
 Success!
