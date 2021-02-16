@@ -1,9 +1,9 @@
 Success!
-Step: 994
+Step: 1085
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-*********************************************X
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*X
-X X******************************************X
+X                                            X
+X XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+X X*******************************************
 X X*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-X
 X X****************************************X-X
 X XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*X-X
@@ -11,6 +11,7 @@ X                                        X*X-X
 X XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX X*X-X
 X**************************************X X*X-X
 X*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX***X*--X
+X*X----------------------------------X-X*X*X-X
 X*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-X-X*X*X-X
 X**********************************X-X-X*X*X-X
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*X-X-X*X*X-X
@@ -24,6 +25,6 @@ X *********************************X-X-X*X*X-X
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*X-X-X*X*X-X
 X**********************************X-X-X*X*X-X
 X*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-X-X*X*X-X
-X*****************************-----X---X***X-X
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXX*XXXXXXXXXXXXXXXX
+X**********************************X---X***X-X
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*XXXXXXXXXXX
 
