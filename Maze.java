@@ -5,98 +5,112 @@ import java.io.*;
 
 public class Maze
  {static final String inputFile = "maze.txt";                                   // This is the input file for the maze
-  static char[][] maze;
-  static Integer steps    = 0,
-       rows = null,  cols = null,
-       row  = null,  col  = null,
-      sRow  = null, sCol  = null,
-      eRow  = null, eCol  = null;
+  static char[][] maze, corners;
+  static Integer steps    = 0,                                                  // Number of moves made
+       rows = null,  cols = null,                                               // Size of the maze
+       row  = null,  col  = null,                                               // Current position
+      sRow  = null, sCol  = null,                                               // Start position
+      eRow  = null, eCol  = null;                                               // End position
+
+  static final char U = '⬆', D = '⬇', P = '⬅', N = '➜',                         // Arrows
+     dp='┛', dn='┗', up='┓', un='┏', pu='┗', pd='┏', nu='┛',  nd='┓';           // Corners
 
   static Random rand = new Random();                                            // Random number generator
 
   public static void main(String[] args)
-   {getMaze();
-    getStartLocationAndDirection();
-    dm(sRow, sCol, '+');
+   {load();
+    dm('+', sRow, sCol);
     say("Failed");
    }
 
-  public static void getMaze()                                                  // Load the maze
+  public static void load()                                                     // Load the maze
    {try
      {final ArrayList<String> m = new ArrayList<String>();
       String l = "";
-      final Scanner input = new Scanner(new File(inputFile));
+      final Scanner in = new Scanner(new File(inputFile));
 
-      while(input.hasNextLine())
-       {l = input.nextLine();
+      while(in.hasNextLine())                                                   // Read maze
+       {l = in.nextLine();
         m.add(l);
         if      (cols == null) cols = l.length();
         else if (cols != l.length())
          {say("Line should be "+cols+" characters long:\n"+l);
-          System.exit(0);
+          System.exit(1);
          }
        }
 
-      rows = m.size();
+      rows = m.size();                                                          // Parse maze
       maze = new char[rows][cols];
+      corners = new char[rows][cols];
       for  (int r = 0; r < rows; r++)
-       {for(int c = 0; c < cols; c++) maze[r][c] = m.get(r).charAt(c);
+       {for(int c = 0; c < cols; c++)
+         {final char p = maze   [r][c] = m.get(r).charAt(c);
+                         corners[r][c] = ' ';
+          if (p == 'S') {sRow = r; sCol = c;}                                   // Entrance
+          if (p == 'E') {eRow = r; eCol = c;}                                   // Exit
+         }
        }
      }
-    catch (FileNotFoundException e)
+    catch (FileNotFoundException e)                                             // Complain about missing input file
      {say("Error opening file:\n"+inputFile+"\n" + e);
-      System.exit(0);
+      System.exit(2);
      }
    }
 
-  public static void getStartLocationAndDirection()                             // Locate start and exit
-   {for   (int r = 0; r < rows; r++)
-     {for (int c = 0; c < cols; c++)
-       {if (maze[r][c] == 'S')
-         {sRow   = r;
-          sCol   = c;
-         }
-        if (maze[r][c] == 'E')
-         {eRow     = r;
-          eCol     = c;
-         }
-       }
-     }
-   }
-
-  public static boolean dm(int r, int c, char m)                                // Find path through the maze - try t step to position (r,c) and mark it with the specified character
+  public static void dm(char m, int pr, int pc)                                 // Find path through the maze - move in the indicated direction and mark the new position with the specified character in the context of the preceding character
    {++steps;
-    if (r < 0 || r >= rows || c < 0 || c >= cols) return false;                 // Check the proposed location is valid
+    int c = pc, r = pr;                                                         // New position
+    switch(m)
+     {case N: c = pc + 1; break;
+      case P: c = pc - 1; break;
+      case U: r = pr - 1; break;
+      case D: r = pr + 1; break;
+     }
+
+    if (r < 0 || r >= rows || c < 0 || c >= cols) return;                       // Check the proposed location is valid
+
+    char M = maze[pr][pc];                                                      // Fix previous arrow
+    if      (false) {}
+    else if (M == D && m == N) corners[pr][pc] = dn;
+    else if (M == D && m == P) corners[pr][pc] = dp;
+    else if (M == U && m == N) corners[pr][pc] = un;
+    else if (M == U && m == P) corners[pr][pc] = up;
+    else if (M == P && m == U) corners[pr][pc] = pu;
+    else if (M == P && m == D) corners[pr][pc] = pd;
+    else if (M == N && m == U) corners[pr][pc] = nu;
+    else if (M == N && m == D) corners[pr][pc] = nd;
 
     if (maze[r][c] == 'E')                                                      // Check for exit
      {  maze[r][c]  = m;
       say("Success!");
-      displayMaze();
+      display();
       System.exit(0);
      }
 
     if (maze[r][c] == ' ' || maze[r][c] == 'S')                                 // Try to make a move
      {  maze[r][c] = m;
-       final int  i = rand.nextInt(4);                                          // Randomize the directionality
-       final char D = '⬆', U = '⬇', P = '⬅', N = '➜';
-       final boolean R =
-        i==0 ? dm(r, c+1, N) || dm(r, c-1, P) || dm(r+1, c, U) || dm(r-1, c, D):
-        i==1 ? dm(r+1, c, U) || dm(r-1, c, D) || dm(r, c+1, N) || dm(r, c-1, P):
-        i==2 ? dm(r, c-1, P) || dm(r+1, c, U) || dm(r-1, c, D) || dm(r, c+1, N):
-               dm(r-1, c, D) || dm(r+1, c, U) || dm(r, c-1, P) || dm(r, c+1, N);
-      if (!R) maze[r][c] = '-';                                                 // Failed to make a move so mark out maze
-      return R;
+       switch(rand.nextInt(4))                                                  // Randomize the directionality
+        {case  0: dm(N, r, c); dm(P, r, c); dm(D, r, c); dm(U, r, c); break;
+         case  1: dm(D, r, c); dm(U, r, c); dm(N, r, c); dm(P, r, c); break;
+         case  2: dm(P, r, c); dm(D, r, c); dm(U, r, c); dm(N, r, c); break;
+         case  3: dm(U, r, c); dm(D, r, c); dm(P, r, c); dm(N, r, c); break;
+        }
+      maze    [r] [c] = '-';
      }
-
-    return false;                                                               // Wall
+      corners[pr][pc] = ' ';
    }
 
-  public static void displayMaze()                                              // Display the maze
+  public static void display()                                                  // Display the maze
    {say("Step: " + steps);
     for  (int r = 0; r < rows; r++)
      {for(int c = 0; c < cols; c++)
-       {final char p = maze[r][c], q = p == '-' ? ' ' : p;                      // Remove back tracks
-        System.err.print(q);
+       {final char m = maze[r][c], k = corners[r][c];
+        char q = m;
+             q = m == D || m == U ? '┃' : q;
+             q = m == N || m == P ? '━' : q;
+             q = m == '-'         ? ' ' : q;
+             q = m == 'X'         ? '█' : q;
+        System.err.print(k != ' ' ? k : q);                                     // Overlay corner if present
        }
       say();
      }
