@@ -923,6 +923,7 @@ sub writeFileFromCurrentRun($$)                                                 
 
 sub writeFileFromFileFromCurrentRun($)                                          # Write a file into the repository from the current run
  {my ($target) = @_;                                                            # The target file name in the repo, the text to write into this file
+  -e $target or confess "File to upload does not exist:\n$target";
   if (my $g = currentRepo)                                                      # We are on GitHub
    {$g->gitFile = $target;
     $g->write(scalar(readFile($target)));
