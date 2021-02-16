@@ -1,0 +1,23 @@
+# Maze
+
+name: Test
+
+on:
+  push
+
+jobs:
+        
+  java:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install
+      run: |
+        sudo cpan -T -i Data::Table::Text GitHub::Crud Digest::SHA1 Date::Manip DBI DBD::Pg    
+
+    - name: Test
+      run: |
+        javac -d . -g Maze.java && java -ea -cp .:Test.Maze
+        GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} perl upload.pl 
