@@ -2,7 +2,7 @@
 
 ![Test](https://github.com/philiprbrenan/maze/workflows/Test/badge.svg)
 
-Traverse a **maze** via java running in a gitHUb action.  Place a maze in file: **maze.txt** and commit.  The action will run and place the results in file: **output.txt**, see:
+Traverse a **maze** via java running in a gitHub action.  Place a maze in file: **maze.txt** and commit.  The action will run and place the results in file: **output.txt**, see:
 ```
 Success!
 Step: 2104
