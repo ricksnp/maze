@@ -15,7 +15,6 @@ jobs:
     
     - name: Install
       run: |
-        sudo apt install curl
         sudo cpan -T -i Data::Table::Text GitHub::Crud Digest::SHA1 Date::Manip DBI DBD::Pg    
 
     - name: Test
