@@ -12,10 +12,12 @@ public class Maze
       sRow  = null, sCol  = null,
       eRow  = null, eCol  = null;
 
+  static Random rand = new Random();                                            // Random number generator
+
   public static void main(String[] args)
    {getMaze();
     getStartLocationAndDirection();
-    doMaze(sRow, sCol);
+    dm(sRow, sCol, '+');
     say("Failed");
    }
 
@@ -62,28 +64,31 @@ public class Maze
      }
    }
 
-  public static boolean doMaze(int row, int col)                                // Find path through the maze
+  public static boolean dm(int r, int c, char m)                                // Find path through the maze - try t step to position (r,c) and mark it with the specified character
    {++steps;
-    if (row < 0 || row >= rows || col < 0 || col >= cols) return false;
-    if (maze[row][col] == 'E')
-     {  maze[row][col]  = '*';
+    if (r < 0 || r >= rows || c < 0 || c >= cols) return false;                 // Check the proposed location is valid
+
+    if (maze[r][c] == 'E')                                                      // Check for exit
+     {  maze[r][c]  = m;
       say("Success!");
       displayMaze();
       System.exit(0);
      }
 
-    if (maze[row][col] == ' ' || maze[row][col] == 'S')
-     {maze[row][col] = '*';
-      boolean r = false;
-      if      (doMaze(row, col + 1)) r = true;
-      else if (doMaze(row, col - 1)) r = true;
-      else if (doMaze(row + 1, col)) r = true;
-      else if (doMaze(row - 1, col)) r = true;
-      if (!r) maze[row][col] = '-';
-      return r;
+    if (maze[r][c] == ' ' || maze[r][c] == 'S')                                 // Try to make a move
+     {  maze[r][c] = m;
+       final int i = rand.nextInt(4);                                           // Randomize the directionality
+       final char D = '↑', U = '↓', P = '←', N = '➜';
+       final boolean R =
+        i==0 ? dm(r, c+1, N) || dm(r, c-1, P) || dm(r+1, c, U) || dm(r-1, c, D) :
+        i==1 ? dm(r+1, c, U) || dm(r-1, c, D) || dm(r, c+1, N) || dm(r, c-1, P) :
+        i==2 ? dm(r, c-1, P) || dm(r+1, c, U) || dm(r-1, c, D) || dm(r, c+1, N) :
+               dm(r-1, c, D) || dm(r+1, c, U) || dm(r, c-1, P) || dm(r, c+1, N);
+      if (!R) maze[r][c] = '-';                                                 // Failed to make a move so mark out maze
+      return R;
      }
 
-    return false;
+    return false;                                                               // Wall
    }
 
   public static void displayMaze()                                              // Display the maze
@@ -95,7 +100,7 @@ public class Maze
     say();
    }
 
-  public static void say(Object...O)                                           // Say something
+  public static void say(Object...O)                                            // Say something
    {final StringBuilder b = new StringBuilder();
     for(Object o: O) b.append(o);
     System.err.print(b.toString()+"\n");
